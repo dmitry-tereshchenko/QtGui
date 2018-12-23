@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     DatabaseManager::getInstanse();
 
-    char b = 'b';
+    char b = 'x';
     int A = b;
     qDebug() <<(int)'b'<< (int)'s' << (int)'o';
     QString str = QString("%1").arg(A, 2, 16, QChar('0'));

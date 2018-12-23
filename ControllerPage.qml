@@ -43,8 +43,8 @@ BaseElements.BasePage{
 
         Connections{
             target: led
-            onDisconnectSignals: {d.onConnect()}
-            onConnectSignals: {d.onDisconnect()}
+          onConnectSignals : {d.onConnect()}
+           onDisconnectSignals : {d.onDisconnect()}
         }
 
         BaseElements.WorkStatus{

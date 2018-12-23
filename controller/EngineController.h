@@ -26,7 +26,7 @@ public slots:
 
 private:
     SerialPort* m_port;
-    uint8_t crc8(const char *addr, uint8_t len);
+    char crc8(const QByteArray &buffer);
 };
 
 #endif // ENGINECONTROLLER_H
