@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="/home/chameleon/CreateOptics/android-build/libs/QtAndroid-bundled.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="27.0.3"
+        sha1="c927a4cf17d11a87e606ae315eede6cca42f1dc4">
+        <dex dex="/home/chameleon/CreateOptics/android-build/build/intermediates/pre-dexed/debug/QtAndroid-bundled_197b0d5cd37db749955dfddf58c1fec812f92e45.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/chameleon/CreateOptics/android-build/libs/QtAndroidBearer-bundled.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="27.0.3"
+        sha1="dfc4cbc036c544d5556e4c53ca93f3fbbd38cff1">
+        <dex dex="/home/chameleon/CreateOptics/android-build/build/intermediates/pre-dexed/debug/QtAndroidBearer-bundled_12c854cc42e2a829dacb1d548a464aced13d1ba2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/chameleon/CreateOptics/android-build/libs/QtMultimedia-bundled.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="27.0.3"
+        sha1="4dcbd9b3f52ca576a4bc0154ecaf1244f684c1ec">
+        <dex dex="/home/chameleon/CreateOptics/android-build/build/intermediates/pre-dexed/debug/QtMultimedia-bundled_55644377df74475c249eccf3962abf1d64e1e32d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/chameleon/CreateOptics/android-build/libs/QtAndroidExtras-bundled.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="27.0.3"
+        sha1="7f2e4ef1a24846d97cd0b59953e5c6c06674c35c">
+        <dex dex="/home/chameleon/CreateOptics/android-build/build/intermediates/pre-dexed/debug/QtAndroidExtras-bundled_813a41b11b7919cc1a69eb641d08b5e1acd767f3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/chameleon/CreateOptics/android-build/libs/QtAndroidBluetooth-bundled.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="27.0.3"
+        sha1="81784de37ee2f7aa75292fe0579af89de0cdc290">
+        <dex dex="/home/chameleon/CreateOptics/android-build/build/intermediates/pre-dexed/debug/QtAndroidBluetooth-bundled_ca59d755f2f04cd6fe60e79ed539f0aee9ef1318.jar" />
+    </item>
+
+</items>

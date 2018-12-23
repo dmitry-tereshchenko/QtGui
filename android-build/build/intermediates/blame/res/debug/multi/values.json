@@ -1,0 +1,144 @@
+[
+    {
+        "outputFile": "/home/chameleon/CreateOptics/android-build/build/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endLine": 729,
+                    "endColumn": 12,
+                    "endOffset": 100549
+                },
+                "from": {
+                    "file": "/home/chameleon/CreateOptics/android-build/res/values/libs.xml",
+                    "position": {
+                        "startLine": 86,
+                        "startColumn": 4,
+                        "startOffset": 6070,
+                        "endLine": 813,
+                        "endColumn": 12,
+                        "endOffset": 106564
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 730,
+                    "startColumn": 4,
+                    "startOffset": 100554,
+                    "endLine": 780,
+                    "endColumn": 12,
+                    "endOffset": 105769
+                },
+                "from": {
+                    "file": "/home/chameleon/CreateOptics/android-build/res/values/libs.xml",
+                    "position": {
+                        "startLine": 35,
+                        "startColumn": 4,
+                        "startOffset": 850,
+                        "endLine": 85,
+                        "endColumn": 12,
+                        "endOffset": 6065
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 781,
+                    "startColumn": 4,
+                    "startOffset": 105774,
+                    "endLine": 785,
+                    "endColumn": 12,
+                    "endOffset": 105860
+                },
+                "from": {
+                    "file": "/home/chameleon/CreateOptics/android-build/res/values/libs.xml"
+                }
+            },
+            {
+                "to": {
+                    "startLine": 786,
+                    "startColumn": 4,
+                    "startOffset": 105865,
+                    "endLine": 804,
+                    "endColumn": 13,
+                    "endOffset": 106325
+                },
+                "from": {
+                    "file": "/home/chameleon/CreateOptics/android-build/res/values/libs.xml",
+                    "position": {
+                        "startLine": 15,
+                        "startColumn": 5,
+                        "startOffset": 384,
+                        "endLine": 33,
+                        "endColumn": 13,
+                        "endOffset": 844
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 805,
+                    "startColumn": 4,
+                    "startOffset": 106330,
+                    "endLine": 807,
+                    "endColumn": 12,
+                    "endOffset": 106440
+                },
+                "from": {
+                    "file": "/home/chameleon/CreateOptics/android-build/res/values/libs.xml"
+                }
+            },
+            {
+                "to": {
+                    "startLine": 808,
+                    "startColumn": 4,
+                    "startOffset": 106445,
+                    "endColumn": 107,
+                    "endOffset": 106548
+                },
+                "from": {
+                    "file": "/home/chameleon/Qt/5.10.0/android_armv7/src/android/java/res/values/strings.xml"
+                }
+            },
+            {
+                "to": {
+                    "startLine": 809,
+                    "startColumn": 4,
+                    "startOffset": 106553,
+                    "endColumn": 121,
+                    "endOffset": 106670
+                },
+                "from": {
+                    "file": "/home/chameleon/Qt/5.10.0/android_armv7/src/android/java/res/values/strings.xml"
+                }
+            },
+            {
+                "to": {
+                    "startLine": 810,
+                    "startColumn": 4,
+                    "startOffset": 106675,
+                    "endColumn": 111,
+                    "endOffset": 106782
+                },
+                "from": {
+                    "file": "/home/chameleon/Qt/5.10.0/android_armv7/src/android/java/res/values/strings.xml"
+                }
+            },
+            {
+                "to": {
+                    "startLine": 811,
+                    "startColumn": 4,
+                    "startOffset": 106787,
+                    "endColumn": 84,
+                    "endOffset": 106867
+                },
+                "from": {
+                    "file": "/home/chameleon/Qt/5.10.0/android_armv7/src/android/java/res/values/strings.xml"
+                }
+            }
+        ]
+    }
+]
