@@ -16,7 +16,6 @@ ApplicationWindow {
     modality: Qt.ApplicationModal
     Component.onCompleted: applicationWindow.showFullScreen()
 
-    Led{id: led}
     SettingsController {id: settingsController}
     BaseElements.Constants{id: constant; anchors.fill: parent}
     OperatorModel{id: operatorModel}

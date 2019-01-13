@@ -3,6 +3,7 @@
 #include <QQmlContext>
 
 #include "controller/EngineController.h"
+#include "controller/Connection.h"
 #include "controller/Autorization.h"
 #include "controller/SettingsController.h"
 #include "controller/ICommand.h"
@@ -11,16 +12,16 @@
 #include <QtAndroid>
 #include <QtAndroidExtras/QAndroidJniObject>
 #endif
-#include <libcore/SettingsManager.h>
-#include <libcore/Permissions.h>
-#include <libcore/LogsIO.h>
-#include <guiModels/OperatorModel.h>
-#include <guiModels/HeaderModel.h>
-#include <guiModels/DocumentProtocol.h>
-#include <libJournal/Journal.h>
-#include <libJournal/JournalFile.h>
-#include <libJournal/JournalSyslog.h>
-#include <guiModels/SessionReport.h>
+#include "libcore/SettingsManager.h"
+#include "libcore/Permissions.h"
+#include "libcore/LogsIO.h"
+#include "guiModels/OperatorModel.h"
+#include "guiModels/HeaderModel.h"
+#include "guiModels/DocumentProtocol.h"
+#include "libJournal/Journal.h"
+#include "libJournal/JournalFile.h"
+#include "libJournal/JournalSyslog.h"
+#include "guiModels/SessionReport.h"
 #include "Perm.h"
 #include "CAManager.h"
 
@@ -29,13 +30,11 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     DatabaseManager::getInstanse();
 
-    char b = 'x';
-    int A = b;
-    qDebug() <<(int)'b'<< (int)'s' << (int)'o';
-    QString str = QString("%1").arg(A, 2, 16, QChar('0'));
-
-     qDebug() << str.toLocal8Bit().toHex().toUpper();
-
+    qmlRegisterSingletonType<Connection>("CreateOptics", 1, 0, "Connection", [](QQmlEngine *engine, QJSEngine *scriptEngine)-> QObject* {
+        Q_UNUSED(engine)
+        Q_UNUSED(scriptEngine)
+        return Connection::getInstance();
+    });
     qmlRegisterType<EngineController>("CreateOptics", 1, 0, "Led");
     qmlRegisterType<Autorization>("CreateOptics", 1, 0, "Account");
     qmlRegisterType<SettingsController>("CreateOptics", 1, 0, "SettingsController");
@@ -58,6 +57,10 @@ int main(int argc, char *argv[])
     Permissions permissions;
     QQmlEngine::setObjectOwnership(&permissions, QQmlEngine::CppOwnership);
     engine.rootContext()->setContextProperty("permissions", &permissions);
+
+    EngineController engController;
+    QQmlEngine::setObjectOwnership(&engController, QQmlEngine::CppOwnership);
+    engine.rootContext()->setContextProperty("led", &engController);
 
     QString countryCode = SettingsManager::getInstance()->coreSettings()->value("Phone/phoneNumberCountryCode", "+38").toString();
     QString phoneMask = SettingsManager::getInstance()->coreSettings()->value("Phone/phoneNumberInputMask", "999 999-99-99").toString();

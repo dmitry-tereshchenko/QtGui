@@ -2,8 +2,7 @@
 #define ENGINECONTROLLER_H
 
 #include <QObject>
-#include <libcore/Types.h>
-#include "connector/SerialPort.h"
+#include "Connection.h"
 #include "ICommand.h"
 
 class EngineController : public QObject
@@ -11,22 +10,18 @@ class EngineController : public QObject
     Q_OBJECT
 public:
     EngineController(QObject* parent = 0);
-    Q_INVOKABLE void connect();
-    Q_INVOKABLE void disconnect();
-    Q_INVOKABLE void runEngine(int, uint value);
+    Q_INVOKABLE void runEngine(char, uint value);
     Q_INVOKABLE void stopEngine(int);
-    Q_INVOKABLE void forceOff();
-
-signals:
-    void connectSignals();
-    void disconnectSignals();
 
 public slots:
     const QString& read() const;
 
 private:
     SerialPort* m_port;
-    char crc8(const QByteArray &buffer);
+    Connection* m_currentConnection;
+    uchar crc8(const QByteArray &buffer);
+    QByteArray toByteArray(uchar prefix, uchar postfix);
+    QByteArray toByteArray(uchar summ);
 };
 
 #endif // ENGINECONTROLLER_H

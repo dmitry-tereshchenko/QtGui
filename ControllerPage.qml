@@ -42,9 +42,9 @@ BaseElements.BasePage{
         }
 
         Connections{
-            target: led
-          onConnectSignals : {d.onConnect()}
-           onDisconnectSignals : {d.onDisconnect()}
+            target: Connection
+            onConnectChanged : {d.onConnect()}
+            onDisconnectChanged : {d.onDisconnect()}
         }
 
         BaseElements.WorkStatus{
@@ -74,10 +74,10 @@ BaseElements.BasePage{
         checked: false
         onClicked: {
             if(checked && startBttn.isStopState)
-                led.connect()
+                Connection.connect()
 
             if(!checked && startBttn.isStopState)
-                led.disconnect()
+                Connection.disconnect()
 
             else if(!checked && !startBttn.isStopState)
                 checked = true

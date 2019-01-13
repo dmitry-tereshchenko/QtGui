@@ -4,40 +4,38 @@
 #include <QSqlRecord>
 #include <libJournal/Journal.h>
 
-Autorization::Autorization(QObject *parent) : QObject(parent)
+Autorization::Autorization(QObject *parent)
+    : QObject(parent)
+    , m_isOpenSession(false)
 {
-    m_info = new Operator::Info;
-    m_isOpenSession = false;
 }
 
 Autorization::~Autorization()
 {
     if(m_isOpenSession)
         exit();
-    delete m_info;
 }
 
 bool Autorization::login(const QString& passwd)
 {
-    if(passwd != m_info->getPassword()){
+    if(passwd != m_info.getPassword()){
         exit();
-        bool rezult = DatabaseManager::getInstanse()->login(passwd, *m_info);
-        if(!rezult){
+        if(!DatabaseManager::getInstanse()->login(passwd, m_info)){
             Journal::instance()->error(QString("Autorization::login() Wrong password!"));
             return false;
         }
     }
 
-    m_isOpenSession = true;
-    Operator::setOperator(*m_info);
+    Operator::setOperator(m_info);
     Journal::instance()->trace(QString("Start session!"));
-    Journal::instance()->trace(QString("Autorization::login() User: %1").arg(m_info->usrName));
+    Journal::instance()->trace(QString("Autorization::login() User: %1").arg(m_info.usrName));
+    m_isOpenSession = true;
     return true;
 }
 
 bool Autorization::exit()
 {
-    if(DatabaseManager::getInstanse()->closeSession(*m_info)){
+    if(DatabaseManager::getInstanse()->closeSession(m_info)){
         Journal::instance()->trace(QString("End session!"));
         return true;
     }

@@ -48,10 +48,8 @@ bool CAManager::isValidCertificate()
             && cert.issuerInfo(QSslCertificate::LocalityName).at(0) == m_certData[CAParam::LocalityName]
             && cert.issuerInfo(QSslCertificate::CommonName).at(0) == m_certData[CAParam::CommonName])
     {
-        if(QDateTime::currentDateTime() >= cert.effectiveDate() && QDateTime::currentDateTime() <= cert.expiryDate()){
-            Journal::instance()->trace(QString("CAManager::isValidCertificate() Certificate valid"));
+        if(QDateTime::currentDateTime() >= cert.effectiveDate() && QDateTime::currentDateTime() <= cert.expiryDate())
             return true;
-        }
     }
 
     Journal::instance()->critical(QString("CAManager::isValidCertificate() Certificate not valid"));

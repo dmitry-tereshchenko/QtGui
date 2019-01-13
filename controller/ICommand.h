@@ -12,9 +12,9 @@ struct Command : public QObject
 
 public:
     enum Engine {
-        BASE_ENGINE = 0x142,
-        DUAL_ENGINE = 0x163,
-        ALL_ENGINES = 0x157
+        BASE_ENGINE = 0x42,
+        DUAL_ENGINE = 0x4F,
+        ALL_ENGINES = 0x41
     };
 
     enum ProcessEngine {
@@ -35,9 +35,9 @@ struct Command : public QObject
 
 public:
     enum Engine {
-        BASE_ENGINE = 'b',
-        DUAL_ENGINE = 'd',
-        ALL_ENGINES = 'a'
+        BASE_ENGINE = 0x66,
+        DUAL_ENGINE = 0x79,
+        ALL_ENGINES = 0x65
     };
 
     enum ProcessEngine {

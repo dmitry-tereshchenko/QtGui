@@ -16,8 +16,8 @@ public:
     Q_INVOKABLE bool exit();
 
 private:
-    Operator::Info *m_info;
-    bool    m_isOpenSession;
+    Operator::Info m_info;
+    bool           m_isOpenSession;
 };
 
 #endif // AUTORIZATION_H

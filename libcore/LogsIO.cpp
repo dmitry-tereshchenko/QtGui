@@ -14,14 +14,14 @@ QString LogsIO::read()
 
     QFile file(mSource);
     QString fileContent;
-    if ( file.open(QIODevice::ReadOnly) ) {
+    if (file.open(QIODevice::ReadOnly)){
         QString line;
-        QTextStream t( &file );
+        QTextStream t(&file);
         do {
             line = t.readLine();
             fileContent += ("\n" + line);
-        } while (!line.isNull());
-
+        }
+        while (!line.isNull());
         file.close();
     }
     else

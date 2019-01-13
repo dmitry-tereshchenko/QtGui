@@ -24,7 +24,7 @@ public:
     Q_INVOKABLE bool isReadNewCertificate(const QString& path);
 
 private:
-    void debugDumpCertificate(const QSslCertificate& cer);
+    static void debugDumpCertificate(const QSslCertificate& cer);
     QSslCertificate getCertificate() const;
 
 private:

@@ -1,42 +1,44 @@
 #include "EngineController.h"
-#include <libJournal/Journal.h>
+#include<QDataStream>
 
 EngineController::EngineController(QObject *parent)
     : QObject(parent)
     , m_port(Q_NULLPTR)
+    , m_currentConnection(Q_NULLPTR)
 {
-    m_port = new SerialPort(this);
-    QObject::connect(m_port, SIGNAL(deviceConnected()), this, SIGNAL(connectSignals()));
-    QObject::connect(m_port, SIGNAL(deviceDisconnected()), this, SIGNAL(disconnectSignals()));
-    QObject::connect(m_port, SIGNAL(readyRead()), this, SLOT(read()));
-}
-
-void EngineController::connect()
-{
-    if(m_port->openPort()){
-        Journal::instance()->trace(QString("EngineController::connect() New connect"));
-        return;
-    }
-
-    Journal::instance()->critical(QString("EngineController::connect() Not connect"));
-}
-
-void EngineController::disconnect()
-{
-    if(m_port->device()->isOpen()){
-        Journal::instance()->trace(QString("EngineController::disconnect() Disconnect"));
-        m_port->closePort();
-        emit disconnectSignals();
+    m_currentConnection = Connection::getInstance();
+    if(m_currentConnection){
+        m_port = m_currentConnection->getPort();
+        QObject::connect(m_currentConnection, SIGNAL(readChanged()), this, SLOT(read()));
     }
 }
 
-void EngineController::runEngine(int curEng, uint value)
+QByteArray EngineController::toByteArray(uchar prefix, uchar postfix)
 {
-    QByteArray command;
-    command += curEng;
-    command += value;
-    command += crc8(command);
-    m_port->device()->write(command);
+    QByteArray array;
+    QDataStream stream(&array, QIODevice::WriteOnly);
+    stream.setByteOrder(QDataStream::LittleEndian);
+    stream << prefix;
+    stream << postfix;
+    return array;
+}
+
+QByteArray EngineController::toByteArray(uchar summ)
+{
+    QByteArray array;
+    QDataStream stream(&array, QIODevice::WriteOnly);
+    stream.setByteOrder(QDataStream::LittleEndian);
+    stream << summ;
+    return array;
+}
+
+void EngineController::runEngine(char curEng, uint value)
+{
+    QByteArray command = toByteArray((uchar)curEng, (uchar)value);
+    QByteArray controlSumm = toByteArray(crc8(command));
+    controlSumm.prepend(command);
+    m_port->device()->write(controlSumm);
+    m_port->device()->waitForBytesWritten(1000);
 }
 
 void EngineController::stopEngine(int curEng)
@@ -46,21 +48,16 @@ void EngineController::stopEngine(int curEng)
     m_port->device()->waitForBytesWritten(1000);
 }
 
-void EngineController::forceOff()
-{
-    QString command = QString("%1%2").arg(static_cast<char>(InputCommand::Command::Engine::ALL_ENGINES)).arg(0);
-    m_port->device()->write(command.toStdString().c_str());
-    m_port->device()->waitForBytesWritten(1000);
-}
-
 const QString &EngineController::read() const
 {
+     qDebug() << "Read: ";
     const QByteArray& temp = m_port->device()->readAll();
     static QString data = QString::fromStdString(temp.toStdString());
+    qDebug() << "Data: " << data;
     return data;
 }
 
-char EngineController::crc8(const QByteArray &buffer)
+uchar EngineController::crc8(const QByteArray &buffer)
 {
     const uchar crc8Table[256] =
     {
@@ -82,10 +79,10 @@ char EngineController::crc8(const QByteArray &buffer)
         116, 42, 200, 150, 21, 75, 169, 247, 182, 232, 10, 84, 215, 137, 107, 53
     };
 
-    char crc = 0xFF;
+    uchar crc = 0x00;
 
     for (QByteArray::const_iterator it = buffer.constBegin(); it != buffer.constEnd(); ++it)
-        crc = crc8Table[crc ^ char(*it)];
+        crc = crc8Table[crc ^ uchar(*it)];
 
     return crc;
 }

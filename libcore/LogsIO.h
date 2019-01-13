@@ -10,9 +10,8 @@ public:
 
     Q_PROPERTY(QString source READ source WRITE setSource NOTIFY sourceChanged)
     Q_INVOKABLE QString read();
-
-    explicit LogsIO(QObject *parent = nullptr);
     QString source() { return mSource; }
+    explicit LogsIO(QObject *parent = nullptr);
 
 public slots:
     void setSource(const QString& source) {mSource = source;}
