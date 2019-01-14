@@ -30,11 +30,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     DatabaseManager::getInstanse();
 
-    qmlRegisterSingletonType<Connection>("CreateOptics", 1, 0, "Connection", [](QQmlEngine *engine, QJSEngine *scriptEngine)-> QObject* {
-        Q_UNUSED(engine)
-        Q_UNUSED(scriptEngine)
-        return Connection::getInstance();
-    });
+    qmlRegisterType<Connection>("CreateOptics", 1, 0, "Connection");
     qmlRegisterType<EngineController>("CreateOptics", 1, 0, "Led");
     qmlRegisterType<Autorization>("CreateOptics", 1, 0, "Account");
     qmlRegisterType<SettingsController>("CreateOptics", 1, 0, "SettingsController");

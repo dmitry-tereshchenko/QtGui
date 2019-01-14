@@ -41,12 +41,6 @@ BaseElements.BasePage{
             }
         }
 
-        Connections{
-            target: Connection
-            onConnectChanged : {d.onConnect()}
-            onDisconnectChanged : {d.onDisconnect()}
-        }
-
         BaseElements.WorkStatus{
             id: lightsView
             height: parent.height
@@ -70,17 +64,23 @@ BaseElements.BasePage{
     sliceData:
         Switch{
         id: connectToPort
+        Connection{id: connection}
         anchors.horizontalCenter: parent.horizontalCenter
         checked: false
         onClicked: {
             if(checked && startBttn.isStopState)
-                Connection.connect()
+                connection.connect()
 
             if(!checked && startBttn.isStopState)
-                Connection.disconnect()
+                connection.disconnect()
 
             else if(!checked && !startBttn.isStopState)
                 checked = true
+        }
+        Connections{
+            target: connection
+            onConnectChanged : {d.onConnect()}
+            onDisconnectChanged : {d.onDisconnect()}
         }
     }
 

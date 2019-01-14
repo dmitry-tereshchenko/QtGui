@@ -60,7 +60,8 @@ SOURCES += main.cpp \
     controller/connector/IODevWrapper.cpp \
     controller/connector/SerialPortWrapper.cpp \
     controller/connector/WiFiWrapper.cpp \
-    controller/Connection.cpp
+    controller/Connection.cpp \
+    controller/connector/IOAVR.cpp
 
 HEADERS += libcore/SettingsManager.h \
     libcore/DefaultsFilePath.h \
@@ -84,7 +85,8 @@ HEADERS += libcore/SettingsManager.h \
     controller/connector/IODevWrapper.h \
     controller/connector/SerialPortWrapper.h \
     controller/connector/WiFiWrapper.h \
-    controller/Connection.h
+    controller/Connection.h \
+    controller/connector/IOAVR.h
 
 HEADERS += \
     controller/DatabaseManager.h \

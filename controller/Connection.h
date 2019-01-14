@@ -3,30 +3,24 @@
 
 #include <QObject>
 #include "connector/SerialPort.h"
-#include <libJournal/Journal.h>
+#include "libJournal/Journal.h"
+#include "connector/IOAVR.h"
 
 class Connection : public QObject
 {
     Q_OBJECT
 public:
-    static Connection* getInstance();
+    Connection(QObject *parent = nullptr);
+
     Q_INVOKABLE void connect();
     Q_INVOKABLE void disconnect();
-
-    bool isOpentPort() const;
-    SerialPort* getPort() const;
 
 signals:
     void connectChanged();
     void disconnectChanged();
-    void readChanged();
 
 private:
-    Connection(QObject *parent = nullptr);
-    SerialPort* m_port;
-    bool        m_isOpenPort;
-
-public slots:
+    QScopedPointer<IOAVR> m_avr;
 };
 
 
