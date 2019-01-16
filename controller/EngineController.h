@@ -16,7 +16,6 @@ public slots:
     const QString& read() const;
 
 private:
-    SerialPort* m_port;
     IOAVR* m_currentConnection;
     QByteArray toByteArray(uchar prefix, uchar postfix);
 };

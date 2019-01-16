@@ -25,30 +25,38 @@ QByteArray IOAVR::toByteArray(uchar summ)
     return array;
 }
 
+bool IOAVR::isChecked()
+{
+    return (isOpenPort() && p_port.data()->device());
+}
+
 void IOAVR::write(const QByteArray &command)
 {
-    if(!command.length())
-        return;
+    if(isChecked() && command.length()){
+        QMutexLocker locker(&mutex);
+        QByteArray prependCommand(command);
+        prependCommand += toByteArray(crc8(command));
 
-    QMutexLocker locker(&mutex);
-    QByteArray prependCommand(command);
-    prependCommand += toByteArray(crc8(command));
-
-    if(p_port.data()->device()->write(prependCommand) != -1 && p_port.data()->device()->waitForBytesWritten(MAX_TIMEOUT))
-    {
-        qDebug() << "Send command";
+        if(p_port.data()->device()->write(prependCommand) != -1 && p_port.data()->device()->waitForBytesWritten(MAX_TIMEOUT))
+        {
+            qDebug() << "Send command";
+        }
     }
 }
 
-bool IOAVR::isOpenPort()
+bool IOAVR::openPort()
 {
     return p_port.data()->openPort();
 }
 
+bool IOAVR::isOpenPort()
+{
+    return p_port.data()->isOpenPort();
+}
+
 void IOAVR::closePort()
 {
-    if(isOpenPort())
-        p_port.data()->closePort();
+    p_port.data()->closePort();
 }
 
 uchar IOAVR::crc8(const QByteArray &buffer)

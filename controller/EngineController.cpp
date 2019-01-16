@@ -3,9 +3,8 @@
 
 EngineController::EngineController(QObject *parent)
     : QObject(parent)
-    , m_currentConnection(Q_NULLPTR)
+    , m_currentConnection(IOAVR::getInstance())
 {
-    m_currentConnection = IOAVR::getInstance();
 }
 
 QByteArray EngineController::toByteArray(uchar prefix, uchar postfix)

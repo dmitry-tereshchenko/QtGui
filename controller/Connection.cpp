@@ -10,7 +10,7 @@ Connection::Connection(QObject *parent)
 
 void Connection::connect()
 {
-    if(m_avr.data()->isOpenPort()){
+    if(m_avr.data()->openPort()){
         Journal::instance()->trace(QString("Connection::connect() Connect to AVR"));
         emit connectChanged();
         return;

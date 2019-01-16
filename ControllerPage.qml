@@ -5,6 +5,7 @@ import CreateOptics 1.0
 
 BaseElements.BasePage{
     id: controllerPage
+    Connection{id: connection}
     headerData: Rectangle{
         anchors.fill: parent
         color: "white"
@@ -64,7 +65,7 @@ BaseElements.BasePage{
     sliceData:
         Switch{
         id: connectToPort
-        Connection{id: connection}
+
         anchors.horizontalCenter: parent.horizontalCenter
         checked: false
         onClicked: {

@@ -24,6 +24,7 @@ public:
 public slots:
     bool openPort();
     void closePort();
+    bool isOpenPort();
 
 signals:
     void deviceDisconnected();
