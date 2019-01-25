@@ -16,7 +16,7 @@ public slots:
     const QString& read() const;
 
 private:
-    IOAVR* m_currentConnection;
+    QScopedPointer<IOAVR>   m_currentConnection;
     QByteArray toByteArray(uchar prefix, uchar postfix);
 };
 

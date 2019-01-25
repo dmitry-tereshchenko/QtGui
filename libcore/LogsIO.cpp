@@ -24,8 +24,6 @@ QString LogsIO::read()
         while (!line.isNull());
         file.close();
     }
-    else
-        return QString();
-
+    else return QString();
     return fileContent;
 }

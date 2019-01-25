@@ -10,7 +10,7 @@ namespace Operator
     const QString& phone();
     const QString& password();
     const Info& info();
-    bool can(const PermissionsList &&perm);
+    bool can(const int perm);
     void setOperator(const Info& info);
 }
 

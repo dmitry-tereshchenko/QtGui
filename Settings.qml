@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.3
 
 import "Settings" as Settings
 import "BaseElements" as BaseElements
+import CreateOptics 1.0
 
 Rectangle {
     signal hide()
@@ -40,7 +41,7 @@ Rectangle {
                     font.bold: true
                     MouseArea{
                         anchors.fill: parent
-                        onClicked: permissions.isAddNewUser() ? loaderNewUser.sourceComponent = newUserComponent : undefined
+                        onClicked: permissions.isPermissions(Permissions.ADD_NEW_USER) ? loaderNewUser.sourceComponent = newUserComponent : popupLoader.sourceComponent = notificator
                     }
                 }
 

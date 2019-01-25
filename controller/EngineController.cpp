@@ -20,7 +20,7 @@ QByteArray EngineController::toByteArray(uchar prefix, uchar postfix)
 void EngineController::runEngine(char curEng, uint value)
 {
     QByteArray command = toByteArray((uchar)curEng, (uchar)value);
-    m_currentConnection->write(command);
+    m_currentConnection.data()->write(command);
 }
 
 const QString &EngineController::read() const

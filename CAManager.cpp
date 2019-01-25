@@ -1,12 +1,13 @@
 #include "CAManager.h"
 #include <QStandardPaths>
 #include <libJournal/Journal.h>
+#include <QtConcurrent/QtConcurrent>
 #include <QDebug>
 #include <QFile>
 
 CAManager::CAManager(QObject *parent)
     : QObject(parent)
-    , m_certLocation(":/assets/cert/rootCA.pem")
+    //, m_certLocation(QString(":/assets/cert/%1").arg(CERT_NAME))
     , m_standartPath(QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory))
     , m_fullPath(m_standartPath + "/" + CERT_NAME)
     , m_certData()
@@ -37,75 +38,86 @@ void CAManager::debugDumpCertificate(const QSslCertificate &cer)
 
 bool CAManager::isValidCertificate()
 {
-    const QSslCertificate &cert = getCertificate();
-    if(!cert.issuerInfo(QSslCertificate::CountryName).size()){
-        Journal::instance()->critical(QString("CAManager::isValidCertificate() Certificate not found"));
+    QFutureWatcher<bool> watcher;
+    QFuture<bool> future = QtConcurrent::run([=]{
+        const QSslCertificate &cert = getCertificate();
+        if(!cert.issuerInfo(QSslCertificate::CountryName).size()){
+            Journal::instance()->critical(QString("CAManager::isValidCertificate() Certificate not found"));
+            return false;
+        }
+
+        if(cert.issuerInfo(QSslCertificate::CountryName).at(0) == m_certData[CAParam::CountryName]
+                && cert.issuerInfo(QSslCertificate::OrganizationalUnitName).at(0) == m_certData[CAParam::OrganizationalUnitName]
+                && cert.issuerInfo(QSslCertificate::LocalityName).at(0) == m_certData[CAParam::LocalityName]
+                && cert.issuerInfo(QSslCertificate::CommonName).at(0) == m_certData[CAParam::CommonName])
+        {
+            if(QDateTime::currentDateTime() >= cert.effectiveDate() && QDateTime::currentDateTime() <= cert.expiryDate())
+                return true;
+        }
+
+        Journal::instance()->critical(QString("CAManager::isValidCertificate() Certificate not valid"));
         return false;
-    }
 
-    if(cert.issuerInfo(QSslCertificate::CountryName).at(0) == m_certData[CAParam::CountryName]
-            && cert.issuerInfo(QSslCertificate::OrganizationalUnitName).at(0) == m_certData[CAParam::OrganizationalUnitName]
-            && cert.issuerInfo(QSslCertificate::LocalityName).at(0) == m_certData[CAParam::LocalityName]
-            && cert.issuerInfo(QSslCertificate::CommonName).at(0) == m_certData[CAParam::CommonName])
-    {
-        if(QDateTime::currentDateTime() >= cert.effectiveDate() && QDateTime::currentDateTime() <= cert.expiryDate())
-            return true;
-    }
+    });
 
-    Journal::instance()->critical(QString("CAManager::isValidCertificate() Certificate not valid"));
-    return false;
+    watcher.setFuture(future);
+    return watcher.result();
 }
 
 bool CAManager::isReadNewCertificate(const QString &path)
 {
-    if(!QFile::exists(path))
-           return false;
+    QFutureWatcher<bool> watcher;
+    QFuture<bool> future = QtConcurrent::run([=]{
+        if(!QFile::exists(path))
+            return false;
 
-    QFile localCerFile(path);
+        QFile localCerFile(path);
 
-    if (!localCerFile.open(QIODevice::ReadWrite))
-        return false;
+        if (!localCerFile.open(QIODevice::ReadWrite))
+            return false;
 
-    QFile::setPermissions(path, QFile::ReadOwner);
-    const QSslCertificate cert(&localCerFile);
-    if(!cert.issuerInfo(QSslCertificate::CountryName).size()){
-        Journal::instance()->critical(QString("CAManager::isReadNewCertificate() Certificate not found"));
-        return false;
-}
-
-    if(cert.issuerInfo(QSslCertificate::CountryName).at(0) == m_certData[CAParam::CountryName]
-            && cert.issuerInfo(QSslCertificate::OrganizationalUnitName).at(0) == m_certData[CAParam::OrganizationalUnitName]
-            && cert.issuerInfo(QSslCertificate::LocalityName).at(0) == m_certData[CAParam::LocalityName]
-            && cert.issuerInfo(QSslCertificate::CommonName).at(0) == m_certData[CAParam::CommonName])
-    {
-        if(QDateTime::currentDateTime() >= cert.effectiveDate() && QDateTime::currentDateTime() <= cert.expiryDate())
-        {
-            if(QFile::exists(m_fullPath))
-                if(QFile::remove(m_fullPath))
-                    if(!QFile::copy(path, m_fullPath))
-                        return false;
-
-            QFile::setPermissions(m_fullPath, QFile::ReadOwner);
-            return true;
+        QFile::setPermissions(path, QFile::ReadOwner);
+        const QSslCertificate cert(&localCerFile);
+        if(!cert.issuerInfo(QSslCertificate::CountryName).size()){
+            Journal::instance()->critical(QString("CAManager::isReadNewCertificate() Certificate not found"));
+            return false;
         }
-    }
 
-    Journal::instance()->critical(QString("CAManager::isReadNewCertificate() Certificate not valid"));
-    return false;
+        if(cert.issuerInfo(QSslCertificate::CountryName).at(0) == m_certData[CAParam::CountryName]
+                && cert.issuerInfo(QSslCertificate::OrganizationalUnitName).at(0) == m_certData[CAParam::OrganizationalUnitName]
+                && cert.issuerInfo(QSslCertificate::LocalityName).at(0) == m_certData[CAParam::LocalityName]
+                && cert.issuerInfo(QSslCertificate::CommonName).at(0) == m_certData[CAParam::CommonName])
+        {
+            if(QDateTime::currentDateTime() >= cert.effectiveDate() && QDateTime::currentDateTime() <= cert.expiryDate())
+            {
+                if(QFile::exists(m_fullPath))
+                    if(QFile::remove(m_fullPath))
+                        if(!QFile::copy(path, m_fullPath))
+                            return false;
+
+                QFile::setPermissions(m_fullPath, QFile::ReadOwner);
+                return true;
+            }
+        }
+
+        Journal::instance()->critical(QString("CAManager::isReadNewCertificate() Certificate not valid"));
+        return false;
+    });
+
+    watcher.setFuture(future);
+    return watcher.result();
 }
 
 QSslCertificate CAManager::getCertificate() const
 {
     if(!QFile::exists(m_fullPath))
-        if(!QFile::copy(m_certLocation, m_fullPath))
-            return QSslCertificate();
+        return QSslCertificate();
 
-    QFile::setPermissions(m_fullPath, QFile::ReadOwner);
     QFile localCerFile(m_fullPath);
+    localCerFile.setPermissions(QFile::ReadOwner);
 
     if (!localCerFile.open(QIODevice::ReadOnly))
         return QSslCertificate();
-
     return QSslCertificate(&localCerFile);
 }
 

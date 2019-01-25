@@ -46,7 +46,7 @@ void SerialPort::closePort()
 
 bool SerialPort::isOpenPort()
 {
-    m_device->device()->isOpen();
+    return m_device->device()->isOpen();
 }
 
 void SerialPort::disconnected()

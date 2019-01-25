@@ -9,15 +9,11 @@ namespace Operator
          m_info = info;
     }
 
-    bool can(const PermissionsList&& perm)
+    bool can(const int perm)
     {
         if ((perm < 0) || m_info.permission.isEmpty())
             return false;
-
-        if (m_info.permission.at(perm).digitValue() == 1)
-            return true;
-
-        return false;
+        return m_info.permission.at(perm).digitValue() == 1;
     }
 
     const QString& name()

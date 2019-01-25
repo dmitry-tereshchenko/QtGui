@@ -3,20 +3,24 @@
 
 #include <QObject>
 #include "Operator.h"
+#define __NOT_PERMISSIONS__ "Not permissions"
+
 class Permissions : public QObject
 {
     Q_OBJECT
+    Q_ENUMS(PermissionsTypes)
 public:
-    Permissions(QObject *parent = nullptr);
+    Permissions(QObject *parent = Q_NULLPTR);
+    enum PermissionsTypes{CAN_SETTINGS = 0, CAN_DOC, USE_CONTROL, ADD_NEW_USER};
 
-public slots:
-    Q_INVOKABLE bool isAddNewUser();
-    Q_INVOKABLE bool isCanDocument();
-    Q_INVOKABLE bool isControl();
-    Q_INVOKABLE bool isCanSettings();
+public:
+    Q_INVOKABLE bool isPermissions(const PermissionsTypes type);
 
-signals:
-    void noPermissionsSignal();
+private:
+    bool isAddNewUser(const PermissionsTypes type);
+    bool isCanDocument(const PermissionsTypes type);
+    bool isControl(const PermissionsTypes type);
+    bool isCanSettings(const PermissionsTypes type);
 };
 
 #endif // PERMISSIONS_H

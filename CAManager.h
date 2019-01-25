@@ -28,7 +28,7 @@ private:
     QSslCertificate getCertificate() const;
 
 private:
-    const QString          m_certLocation;
+    //const QString          m_certLocation;
     const QString          m_standartPath;
     const QString          m_fullPath;
     QMap<CAParam, QString> m_certData;

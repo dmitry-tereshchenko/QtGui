@@ -6,7 +6,7 @@
 
 class SerialPortWrapper : public IODevWrapper
 {
-    Q_OBJECT
+    Q_GADGET
 public:
     SerialPortWrapper(QObject* parent);
     ~SerialPortWrapper();

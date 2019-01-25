@@ -7,7 +7,7 @@
 
 class WiFiWrapper : public IODevWrapper
 {
-     Q_OBJECT
+     Q_GADGET
 public:
     WiFiWrapper(QObject* parent);
     ~WiFiWrapper();

@@ -3,45 +3,52 @@
 
 Permissions::Permissions(QObject *parent) : QObject(parent)
 {
-
 }
 
-bool Permissions::isAddNewUser()
+bool Permissions::isAddNewUser(const PermissionsTypes type)
 {
-    if(!Operator::can(Operator::PermissionsList::ADD_NEW_USERS)){
-        Journal::instance()->warning(QString("Permissions::isAddNewUser() Not permissions"));
-        emit noPermissionsSignal();
+    if(!Operator::can(type)){
+        Journal::instance()->warning(QString("%1 %2").arg(__PRETTY_FUNCTION__).arg(__NOT_PERMISSIONS__));
         return false;
     }
     return true;
 }
 
-bool Permissions::isCanDocument()
+bool Permissions::isCanDocument(const PermissionsTypes type)
 {
-    if(!Operator::can(Operator::PermissionsList::CAN_DOC)){
-        Journal::instance()->warning(QString("Permissions::isCanDocument() Not permissions"));
-        emit noPermissionsSignal();
+    if(!Operator::can(type)){
+        Journal::instance()->warning(QString("%1 %2").arg(__PRETTY_FUNCTION__).arg(__NOT_PERMISSIONS__));
         return false;
     }
     return true;
 }
 
-bool Permissions::isControl()
+bool Permissions::isControl(const PermissionsTypes type)
 {
-    if(!Operator::can(Operator::PermissionsList::ENGINES_CONTROL)){
-        Journal::instance()->warning(QString("Permissions::isControl() Not permissions"));
-        emit noPermissionsSignal();
+    if(!Operator::can(type)){
+        Journal::instance()->warning(QString("%1 %2").arg(__PRETTY_FUNCTION__).arg(__NOT_PERMISSIONS__));
         return false;
 }
     return true;
 }
 
-bool Permissions::isCanSettings()
+bool Permissions::isCanSettings(const PermissionsTypes type)
 {
-    if(!Operator::can(Operator::PermissionsList::ENTER_TO_SETTINGS)){
-        Journal::instance()->warning(QString("Permissions::isCanSettings() Not permissions"));
-        emit noPermissionsSignal();
+    if(!Operator::can(type)){
+        Journal::instance()->warning(QString("%1 %2").arg(__PRETTY_FUNCTION__).arg(__NOT_PERMISSIONS__));
         return false;
     }
     return true;
+}
+
+bool Permissions::isPermissions(const PermissionsTypes type)
+{
+    switch (type) {
+    case ADD_NEW_USER: {return isAddNewUser(type);}
+    case CAN_SETTINGS: {return isCanSettings(type);}
+    case USE_CONTROL: {return isControl(type);}
+    case CAN_DOC: {return isCanDocument(type);}
+    default: return false;
+    }
+    return false;
 }

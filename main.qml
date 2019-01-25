@@ -29,12 +29,6 @@ ApplicationWindow {
         }
     }
 
-    Connections{
-        target: permissions
-        onNoPermissionsSignal:
-            popupLoader.sourceComponent = notificator
-    }
-
     SwipeView{
         id: swipeView
         currentIndex: 0
