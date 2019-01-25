@@ -20,7 +20,7 @@ signals:
     void disconnectChanged();
 
 private:
-    QScopedPointer<IOAVR> m_avr;
+    IOAVR* m_avr;
 };
 
 

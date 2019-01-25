@@ -29,7 +29,7 @@ private:
     IOAVR(const IOAVR&) = delete;
     IOAVR& operator=(IOAVR&) = delete;
 
-    QSharedPointer<SerialPort> p_port;
+    SerialPort*                p_port;
     static QMutex              mutex;
 
 private:

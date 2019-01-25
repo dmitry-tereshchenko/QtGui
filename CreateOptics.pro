@@ -6,7 +6,10 @@ QT += bluetooth sql \
     network \
     charts
 
-CONFIG += c++11
+CONFIG += c++11 \
+          mobility
+
+MOBILITY = connectivity
 
 TRANSLATIONS = translations/en.ts\
     translations/uk.ts \
@@ -61,7 +64,8 @@ SOURCES += main.cpp \
     controller/connector/SerialPortWrapper.cpp \
     controller/connector/WiFiWrapper.cpp \
     controller/Connection.cpp \
-    controller/connector/IOAVR.cpp
+    controller/connector/IOAVR.cpp \
+    controller/connector/BluetoothWrapper.cpp
 
 HEADERS += libcore/SettingsManager.h \
     libcore/DefaultsFilePath.h \
@@ -86,7 +90,8 @@ HEADERS += libcore/SettingsManager.h \
     controller/connector/SerialPortWrapper.h \
     controller/connector/WiFiWrapper.h \
     controller/Connection.h \
-    controller/connector/IOAVR.h
+    controller/connector/IOAVR.h \
+    controller/connector/BluetoothWrapper.h
 
 HEADERS += \
     controller/DatabaseManager.h \

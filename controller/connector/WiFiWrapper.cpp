@@ -32,8 +32,7 @@ bool WiFiWrapper::isOpen()
 
 bool WiFiWrapper::open(QIODevice::OpenMode mode)
 {
-    Q_UNUSED(mode);
-    m_socket->connectToHost("localhost", 1929);
+    m_socket->connectToHost("localhost", 1929, mode);
     if(!m_socket->waitForConnected(3000))
     {
         emit deviceDisconnected();

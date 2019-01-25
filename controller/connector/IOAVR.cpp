@@ -11,9 +11,9 @@ IOAVR::IOAVR(QObject *parent)
     : QObject(parent)
     , p_port(new SerialPort(this))
 {
-    QObject::connect(p_port.data(), SIGNAL(deviceConnected()), this, SIGNAL(connect()));
-    QObject::connect(p_port.data(), SIGNAL(deviceDisconnected()), this, SIGNAL(disconnect()));
-    QObject::connect(p_port.data(), SIGNAL(readyRead()), this, SIGNAL(readyRead()));
+    QObject::connect(p_port, SIGNAL(deviceConnected()), this, SIGNAL(connect()));
+    QObject::connect(p_port, SIGNAL(deviceDisconnected()), this, SIGNAL(disconnect()));
+    QObject::connect(p_port, SIGNAL(readyRead()), this, SIGNAL(readyRead()));
 }
 
 QByteArray IOAVR::toByteArray(uchar summ)
@@ -27,7 +27,7 @@ QByteArray IOAVR::toByteArray(uchar summ)
 
 bool IOAVR::isChecked()
 {
-    return (isOpenPort() && p_port.data()->device());
+    return (isOpenPort() && p_port->device());
 }
 
 void IOAVR::write(const QByteArray &command)
@@ -37,7 +37,7 @@ void IOAVR::write(const QByteArray &command)
         QByteArray prependCommand(command);
         prependCommand += toByteArray(crc8(command));
 
-        if(p_port.data()->device()->write(prependCommand) != -1 && p_port.data()->device()->waitForBytesWritten(MAX_TIMEOUT))
+        if(p_port->device()->write(prependCommand) != -1 && p_port->device()->waitForBytesWritten(MAX_TIMEOUT))
         {
             qDebug() << "Send command";
         }
@@ -46,17 +46,17 @@ void IOAVR::write(const QByteArray &command)
 
 bool IOAVR::openPort()
 {
-    return p_port.data()->openPort();
+    return p_port->openPort();
 }
 
 bool IOAVR::isOpenPort()
 {
-    return p_port.data()->isOpenPort();
+    return p_port->isOpenPort();
 }
 
 void IOAVR::closePort()
 {
-    p_port.data()->closePort();
+    p_port->closePort();
 }
 
 uchar IOAVR::crc8(const QByteArray &buffer)

@@ -6,6 +6,7 @@
 #include "SerialPortWrapper.h"
 #include "WiFiWrapper.h"
 #include "IODevWrapper.h"
+#include "BluetoothWrapper.h"
 
 enum ConcreteConnection{
     RS232,

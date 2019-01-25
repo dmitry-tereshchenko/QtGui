@@ -16,8 +16,8 @@ public slots:
     const QString& read() const;
 
 private:
-    QScopedPointer<IOAVR>   m_currentConnection;
-    QByteArray toByteArray(uchar prefix, uchar postfix);
+    IOAVR* m_currentConnection;
+    QByteArray toByteArray(uchar symbol);
 };
 
 #endif // ENGINECONTROLLER_H

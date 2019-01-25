@@ -7,20 +7,22 @@ EngineController::EngineController(QObject *parent)
 {
 }
 
-QByteArray EngineController::toByteArray(uchar prefix, uchar postfix)
+QByteArray EngineController::toByteArray(uchar symbol)
 {
     QByteArray array;
     QDataStream stream(&array, QIODevice::WriteOnly);
     stream.setByteOrder(QDataStream::LittleEndian);
-    stream << prefix;
-    stream << postfix;
+    stream << symbol;
     return array;
 }
 
 void EngineController::runEngine(char curEng, uint value)
 {
-    QByteArray command = toByteArray((uchar)curEng, (uchar)value);
-    m_currentConnection.data()->write(command);
+    QByteArray command;
+    command += toByteArray((uchar)curEng);
+    command += toByteArray((uchar)value);
+
+    m_currentConnection->write(command);
 }
 
 const QString &EngineController::read() const

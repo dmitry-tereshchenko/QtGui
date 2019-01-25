@@ -67,7 +67,8 @@ void SerialPort::init()
 
     const QString &connectType = SettingsManager::getInstance()->coreSettings()->value("typeConnection", "RS232").toString();
 
-    switch (m_mapConnections[connectType]) {
+    switch (m_mapConnections[connectType])
+    {
         case RS232:{
             m_device = new SerialPortWrapper(this);
             break;
@@ -77,9 +78,13 @@ void SerialPort::init()
             m_device = new WiFiWrapper(this);
             break;
         }
+        case BLUETOOTH:
+        {
+            m_device = new BluetoothWrapper(this);
+            break;
+        }
         default: {
             Journal::instance()->error("SerialPort: unknown device type");
-            Journal::instance()->warning("SerialPort: init null device");
             break;
         }
     }
