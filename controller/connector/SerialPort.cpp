@@ -25,7 +25,7 @@ bool SerialPort::openPort()
 {
     QIODevice* currentDevice = m_device->device();
 
-    if (currentDevice->isOpen())
+    if (m_device->isOpen())
     {
         currentDevice->reset();
         currentDevice->close();
@@ -80,7 +80,11 @@ void SerialPort::init()
         }
         case BLUETOOTH:
         {
+        #if defined(Q_OS_ANDROID)
             m_device = new BluetoothWrapper(this);
+            break;
+        #endif
+            m_device = new SerialPortWrapper(this);
             break;
         }
         default: {

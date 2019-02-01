@@ -1,27 +1,23 @@
 #include "BluetoothWrapper.h"
 #include "libcore/SettingsManager.h"
-#include <QRegExp>
 
 const QString BluetoothWrapper::uuid = "00001101-0000-1000-8000-00805F9B34FB";
+const QString BluetoothWrapper::adress = SettingsManager::getInstance()->coreSettings()->value("BTAdress", "").toString();
+
 BluetoothWrapper::BluetoothWrapper(QObject *parent)
     : IODevWrapper(parent)
     , m_socket(Q_NULLPTR)
     , m_localDevice(Q_NULLPTR)
-    , adress(SettingsManager::getInstance()->coreSettings()->value("BTAdress", "").toString())
-    , adressLength(12)
-    , fullAdressLength(17)
+    , adressLength(17)
 {
     if(adress.length() == adressLength)
     {
         m_localDevice = new QBluetoothLocalDevice(this);
         if(m_localDevice->isValid())
         {
-            m_localDevice->powerOn();
-            m_localDevice->setHostMode(QBluetoothLocalDevice::HostDiscoverable);
             m_socket = new QBluetoothSocket(QBluetoothServiceInfo::RfcommProtocol, this);
-
-            connect(m_socket, SIGNAL(connected()), SIGNAL(deviceConnected()));
-            connect(m_socket, SIGNAL(disconnected()), SIGNAL(deviceDisconnected()));
+            connect(m_socket, SIGNAL(connected()), this, SIGNAL(deviceConnected()));
+            connect(m_socket, SIGNAL(disconnected()), this, SIGNAL(deviceDisconnected()));
         }
     }
 }
@@ -29,6 +25,7 @@ BluetoothWrapper::BluetoothWrapper(QObject *parent)
 BluetoothWrapper::~BluetoothWrapper()
 {
     if(m_socket){
+        m_socket->disconnectFromService();
         m_socket->close();
         delete m_socket;
         m_socket = Q_NULLPTR;
@@ -48,29 +45,14 @@ bool BluetoothWrapper::isOpen()
 
 bool BluetoothWrapper::open(QIODevice::OpenMode mode)
 {
-    m_socket->connectToService(QBluetoothAddress(parseAdress(adress)), QBluetoothUuid(uuid), mode);
-    if(!isOpen())
+    m_localDevice->powerOn();
+    m_localDevice->setHostMode(QBluetoothLocalDevice::HostDiscoverable);
+    if(!m_socket)
     {
         emit deviceDisconnected();
         return false;
     }
-    emit deviceConnected();
+    m_socket->connectToService(QBluetoothAddress(adress), QBluetoothUuid(uuid), mode);
     return true;
 }
 
-const QString BluetoothWrapper::parseAdress(QString adress)
-{
-    QRegExp rx("[0-9A-z]+");
-    QString parseAdress;
-
-    int pos = 0;
-    while ((pos = rx.indexIn(adress, pos)) != -1){
-        parseAdress += rx.cap(1) + ":";
-        pos += rx.matchedLength();
-    }
-
-    if(parseAdress.size() == fullAdressLength + 1)
-        return parseAdress.remove(fullAdressLength - 1, 1);
-
-    return QString();
-}

@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QTcpSocket>
 #include "IODevWrapper.h"
-#include <QBluetoothSocket>
+
 class WiFiWrapper : public IODevWrapper
 {
      Q_OBJECT

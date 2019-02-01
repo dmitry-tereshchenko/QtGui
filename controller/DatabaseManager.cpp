@@ -162,11 +162,7 @@ bool DatabaseManager::login(const QString& passwd, Operator::Info &info)
 
 bool DatabaseManager::transaction()
 {
-    if(!db.transaction())
-        return false;
-
-    else
-        return true;
+    return db.transaction();
 }
 
 bool DatabaseManager::commit()
