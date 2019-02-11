@@ -3,6 +3,7 @@
 WiFiWrapper::WiFiWrapper(QObject *parent)
     : IODevWrapper(parent)
     , m_socket(Q_NULLPTR)
+    , m_type(Type::WIFI)
 {
     m_socket = new QTcpSocket(this);
     connect(m_socket, SIGNAL(connected()), SIGNAL(deviceConnected()));
@@ -40,4 +41,9 @@ bool WiFiWrapper::open(QIODevice::OpenMode mode)
     }
     emit deviceConnected();
     return true;
+}
+
+int WiFiWrapper::getType()
+{
+    return m_type;
 }

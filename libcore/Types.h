@@ -11,6 +11,14 @@
 
 #define INVALID_OPERATOR_ID -1 ///< Невалидный идентификатор оператора, устанавливающийся в конструкторе по умолчанию
 
+namespace Connect {
+    enum ConnectionType{
+        RS232,
+        WIFI,
+        BLUETOOTH
+    };
+}
+
 /*!
  * Идентификатор сессии
  */
@@ -26,12 +34,6 @@ namespace Documents {
 
     struct SessionReport
     {
-        SessionReport()
-            : id(0)
-            , name("")
-            , beginTime("")
-            , endTime(""){}
-
         int     id;
         QString name;
         QString beginTime;

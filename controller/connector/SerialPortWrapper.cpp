@@ -8,6 +8,7 @@ SerialPortWrapper::SerialPortWrapper(QObject* parent)
     , m_idVendor(0)
     , m_idProduct(0)
     , m_portName("")
+    , m_type(Type::RS232)
 {
     m_idVendor = SettingsManager::getInstance()->coreSettings()->value("idVendor", 0).toInt();
     m_idProduct = SettingsManager::getInstance()->coreSettings()->value("idProduct", 0).toInt();
@@ -44,6 +45,7 @@ bool SerialPortWrapper::open(QIODevice::OpenMode mode)
             if(serialPortInfo.productIdentifier() == m_idProduct){
                 m_portName = serialPortInfo.portName();
                 status = true;
+                break;
             }
         }
     }
@@ -75,4 +77,9 @@ bool SerialPortWrapper::open(QIODevice::OpenMode mode)
     }
     emit deviceDisconnected();
     return false;
+}
+
+int SerialPortWrapper::getType()
+{
+    return m_type;
 }

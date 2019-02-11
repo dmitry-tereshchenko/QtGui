@@ -15,9 +15,11 @@ public:
     QIODevice* device();
     bool isOpen();
     bool open(QIODevice::OpenMode mode);
+    int getType();
 
 private:
     QTcpSocket* m_socket;
+    int         m_type;
 };
 
 #endif // WIFIWRAPPER_H

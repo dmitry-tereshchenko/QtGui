@@ -8,12 +8,6 @@
 #include "IODevWrapper.h"
 #include "BluetoothWrapper.h"
 
-enum ConcreteConnection{
-    RS232,
-    WIFI,
-    BLUETOOTH
-};
-
 class SerialPort : public QObject
 {
     Q_OBJECT
@@ -34,11 +28,9 @@ signals:
 
 private:
     IODevWrapper* m_device;
-    static QHash<QString, ConcreteConnection> m_mapConnections;
+    static QHash<QString, Type> m_mapConnections;
 
 private slots:
-    void disconnected();
-    void connected();
     void init();
 };
 
