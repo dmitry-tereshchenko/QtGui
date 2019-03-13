@@ -8,8 +8,6 @@ QVariant OperatorModel::data(const QModelIndex &index, int role) const
         {
         case Roles::Operator_Name:
             return m_typeOperators.at(index.row());
-            break;
-
         default:
             break;
         }

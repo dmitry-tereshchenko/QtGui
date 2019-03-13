@@ -24,28 +24,33 @@ SerialPort::~SerialPort()
 
 bool SerialPort::openPort()
 {
-    QIODevice* currentDevice = m_device->device();
-    if (currentDevice && m_device->isOpen())
-    {
-        currentDevice->reset();
-        currentDevice->close();
+    if(m_device != Q_NULLPTR){
+        QIODevice* currentDevice = this->device();
+        if (currentDevice->isOpen())
+        {
+            currentDevice->reset();
+            currentDevice->close();
+        }
+        return m_device->open(QIODevice::ReadWrite);
     }
-    return m_device->open(QIODevice::ReadWrite);
+    return false;
 }
 
 void SerialPort::closePort()
 {
-    QIODevice* currentDevice = m_device->device();
-    if (currentDevice && currentDevice->isOpen())
-    {
-        #if defined(Q_OS_ANDROID)
-        if(m_device->getType() == Type::BLUETOOTH)
+    if(m_device != Q_NULLPTR){
+        QIODevice* currentDevice = this->device();
+        if (currentDevice->isOpen())
         {
-            BluetoothWrapper* bluetoothDevice = static_cast<BluetoothWrapper*>(m_device);
-            bluetoothDevice->getLocalDevice()->setHostMode(QBluetoothLocalDevice::HostPoweredOff);
+            #if defined(Q_OS_ANDROID)
+            if(m_device->getType() == Type::BLUETOOTH)
+            {
+                BluetoothWrapper* bluetoothDevice = static_cast<BluetoothWrapper*>(m_device);
+                bluetoothDevice->getLocalDevice()->setHostMode(QBluetoothLocalDevice::HostPoweredOff);
+            }
+            #endif
+            currentDevice->close();
         }
-        #endif
-        currentDevice->close();
     }
 }
 
@@ -80,7 +85,7 @@ void SerialPort::init()
             break;
         #endif
             Journal::instance()->error("SerialPort::init() bluetooth not found");
-            break;
+            return;
         }
         default: {
             Journal::instance()->error("SerialPort::init() unknown device type");
